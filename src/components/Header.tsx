@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { Bell, AlertTriangle, RotateCw, FileText, CheckCircle, X } from 'lucide-react'
 import { useAuthStore } from '../stores'
 
 export default function Header() {
@@ -9,7 +10,7 @@ export default function Header() {
     {
       id: 1,
       type: 'danger',
-      icon: '⚠️',
+      Icon: AlertTriangle,
       title: 'Temperature Excursion Detected',
       message: 'Order RD-2026-089 experienced brief temperature variance (8.2°C max). Shipment integrity verified.',
       time: '2 minutes ago',
@@ -18,7 +19,7 @@ export default function Header() {
     {
       id: 2,
       type: 'warning',
-      icon: '🔄',
+      Icon: RotateCw,
       title: 'Delivery Address Redirect Required',
       message: 'Order LL-2026-078 requires updated delivery confirmation. Action needed by Sep 28.',
       time: '15 minutes ago',
@@ -27,7 +28,7 @@ export default function Header() {
     {
       id: 3,
       type: 'warning',
-      icon: '📋',
+      Icon: FileText,
       title: 'Invoice Due Soon',
       message: 'INV-2026-087 ($21,800) due Oct 26, 2026. Set up payment now.',
       time: '1 hour ago',
@@ -36,7 +37,7 @@ export default function Header() {
     {
       id: 4,
       type: 'success',
-      icon: '✓',
+      Icon: CheckCircle,
       title: 'Agreement Renewed',
       message: 'Radiopharma Critical Tier renewed through Dec 31, 2027 with improved volume pricing.',
       time: '3 hours ago',
@@ -85,8 +86,9 @@ export default function Header() {
             onMouseOver={(e) => (e.currentTarget as HTMLButtonElement).style.background = '#f5f5f5'}
             onMouseOut={(e) => (e.currentTarget as HTMLButtonElement).style.background = 'transparent'}
             title="Notifications"
+            aria-label="Notifications"
           >
-            🔔
+            <Bell size={20} color="#461E96" strokeWidth={1.5} />
             <div style={{
               position: 'absolute',
               top: '-2px',
@@ -139,54 +141,63 @@ export default function Header() {
               }}>
                 <div style={{ padding: '16px', borderBottom: '1px solid #e0e0e0', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                   <h3 style={{ fontSize: '14px', fontWeight: '700', margin: 0 }}>Notifications</h3>
-                  <button onClick={() => setShowNotifications(false)} style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: '20px', color: '#999' }}>×</button>
+                  <button onClick={() => setShowNotifications(false)} style={{ background: 'none', border: 'none', cursor: 'pointer', padding: '4px', display: 'flex', alignItems: 'center', justifyContent: 'center' }} aria-label="Close notifications">
+                    <X size={20} color="#999" strokeWidth={1.5} />
+                  </button>
                 </div>
                 <div style={{ flex: 1, overflowY: 'auto', display: 'flex', flexDirection: 'column' }}>
-                  {notifications.map((notif) => (
-                    <div
-                      key={notif.id}
-                      style={{
-                        padding: '12px 16px',
-                        borderBottom: '1px solid #e0e0e0',
-                        cursor: 'pointer',
-                        transition: 'background 0.2s ease',
-                        display: 'flex',
-                        gap: '12px',
-                        alignItems: 'flex-start',
-                        background: notif.unread ? 'rgba(70,30,150,0.03)' : 'transparent'
-                      }}
-                      onMouseOver={(e) => (e.currentTarget as HTMLDivElement).style.background = '#f5f5f5'}
-                      onMouseOut={(e) => (e.currentTarget as HTMLDivElement).style.background = notif.unread ? 'rgba(70,30,150,0.03)' : 'transparent'}
-                    >
-                      <div style={{
-                        flexShrink: 0,
-                        width: '32px',
-                        height: '32px',
-                        borderRadius: '50%',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        fontSize: '16px',
-                        background: notif.type === 'danger' ? 'rgba(231,76,60,0.1)' :
+                  {notifications.map((notif) => {
+                    const { Icon } = notif
+                    const iconColor = notif.type === 'danger' ? '#e74c3c' :
+                                     notif.type === 'warning' ? '#f39c12' :
+                                     notif.type === 'success' ? '#27ae60' :
+                                     '#3498db'
+                    const bgColor = notif.type === 'danger' ? 'rgba(231,76,60,0.1)' :
                                    notif.type === 'warning' ? 'rgba(243,156,18,0.1)' :
                                    notif.type === 'success' ? 'rgba(39,174,96,0.1)' :
                                    'rgba(52,152,219,0.1)'
-                      }}>
-                        {notif.icon}
+                    return (
+                      <div
+                        key={notif.id}
+                        style={{
+                          padding: '12px 16px',
+                          borderBottom: '1px solid #e0e0e0',
+                          cursor: 'pointer',
+                          transition: 'background 0.2s ease',
+                          display: 'flex',
+                          gap: '12px',
+                          alignItems: 'flex-start',
+                          background: notif.unread ? 'rgba(70,30,150,0.03)' : 'transparent'
+                        }}
+                        onMouseOver={(e) => (e.currentTarget as HTMLDivElement).style.background = '#f5f5f5'}
+                        onMouseOut={(e) => (e.currentTarget as HTMLDivElement).style.background = notif.unread ? 'rgba(70,30,150,0.03)' : 'transparent'}
+                      >
+                        <div style={{
+                          flexShrink: 0,
+                          width: '32px',
+                          height: '32px',
+                          borderRadius: '50%',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          background: bgColor
+                        }}>
+                          <Icon size={18} color={iconColor} strokeWidth={1.5} />
+                        </div>
+                        <div style={{ flex: 1, minWidth: 0 }}>
+                          <div style={{ fontWeight: '600', fontSize: '13px', marginBottom: '4px', color: '#1a1a1a' }}>
+                            {notif.title}
+                          </div>
+                          <div style={{ fontSize: '12px', color: '#666', lineHeight: '1.4', marginBottom: '6px' }}>
+                            {notif.message}
+                          </div>
+                          <div style={{ fontSize: '11px', color: '#999' }}>
+                            {notif.time}
+                          </div>
+                        </div>
                       </div>
-                      <div style={{ flex: 1, minWidth: 0 }}>
-                        <div style={{ fontWeight: '600', fontSize: '13px', marginBottom: '4px', color: '#1a1a1a' }}>
-                          {notif.title}
-                        </div>
-                        <div style={{ fontSize: '12px', color: '#666', lineHeight: '1.4', marginBottom: '6px' }}>
-                          {notif.message}
-                        </div>
-                        <div style={{ fontSize: '11px', color: '#999' }}>
-                          {notif.time}
-                        </div>
-                      </div>
-                    </div>
-                  ))}
+                    )
+                  })}
                 </div>
                 <div style={{ padding: '12px 16px', borderTop: '1px solid #e0e0e0', textAlign: 'center' }}>
                   <a href="#" onClick={(e) => e.preventDefault()} style={{ color: '#461E96', fontSize: '12px', fontWeight: '600', textDecoration: 'none', cursor: 'pointer' }}>
