@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { LayoutDashboard, ShoppingCart, FileText, Truck, FileCheck } from 'lucide-react'
 import Header from './Header'
 import Footer from './Footer'
+import Chatbot from './Chatbot'
 
 export default function Layout() {
   const navigate = useNavigate()
@@ -86,6 +87,9 @@ export default function Layout() {
 
       {/* Footer */}
       <Footer />
+
+      {/* Chatbot */}
+      <Chatbot />
     </div>
   )
 }

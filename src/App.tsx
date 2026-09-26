@@ -8,6 +8,7 @@ import Invoices from './pages/Invoices'
 import Tracking from './pages/Tracking'
 import Agreements from './pages/Agreements'
 import PlaceOrder from './pages/PlaceOrder'
+import AddServiceLine from './pages/AddServiceLine'
 import Login from './pages/Login'
 import NotFound from './pages/NotFound'
 import { useAuthStore } from './stores'
@@ -28,6 +29,7 @@ export default function App() {
               <Route path="/tracking" element={<Tracking />} />
               <Route path="/agreements" element={<Agreements />} />
               <Route path="/place-order" element={<PlaceOrder />} />
+              <Route path="/add-service" element={<AddServiceLine />} />
               <Route path="*" element={<NotFound />} />
             </Route>
           ) : (

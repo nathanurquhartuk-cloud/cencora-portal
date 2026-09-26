@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Pill, Microscope, Box, Zap, TrendingUp, Lock, Plus } from 'lucide-react'
+import { Pill, Microscope, Beaker, Dna, Package, ShoppingCart, MoreHorizontal, Plus } from 'lucide-react'
 
 export default function Dashboard() {
   const navigate = useNavigate()
@@ -9,10 +9,11 @@ export default function Dashboard() {
   const serviceLines = [
     { id: 'radiopharma', name: 'Radiopharma', icon: Pill, active: true, tiers: ['Critical Tier', 'Strict Pick up and Delivery'] },
     { id: 'centrallab', name: 'Central Lab Logistics', icon: Microscope, active: true, tiers: ['Standard (4-6 hr)', 'Assured (2 hr)', 'Critical (30 min)'] },
-    { id: 'biospecimen', name: 'Biospecimen', icon: Box, active: false },
-    { id: 'temperature', name: 'Temperature Controlled', icon: Zap, active: false },
-    { id: 'clinical', name: 'Clinical Trial Materials', icon: TrendingUp, active: false },
-    { id: 'hazmat', name: 'Hazmat / Restricted', icon: Lock, active: false }
+    { id: 'clinical', name: 'Clinical Trial Logistics', icon: Beaker, active: false },
+    { id: 'cellgene', name: 'Cell & Gene Therapy', icon: Dna, active: false },
+    { id: 'warehouse', name: 'Warehouse', icon: Package, active: false },
+    { id: 'commercial', name: 'Commercial Supply Chain', icon: ShoppingCart, active: false },
+    { id: 'other', name: 'Other Services', icon: MoreHorizontal, active: false }
   ]
 
   const toggleSection = (id: string) => {
@@ -147,10 +148,10 @@ export default function Dashboard() {
                       </>
                     ) : (
                       <button
-                        onClick={() => navigate('/agreements')}
-                        style={{ flex: 1, padding: '10px 16px', borderRadius: '6px', border: 'none', fontSize: '12px', fontWeight: '600', cursor: 'pointer', background: '#f0f0f0', color: '#666', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }}
+                        onClick={() => navigate(`/add-service?service=${encodeURIComponent(sl.name)}`)}
+                        style={{ flex: 1, padding: '10px 16px', borderRadius: '6px', border: 'none', fontSize: '12px', fontWeight: '600', cursor: 'pointer', background: '#461E96', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }}
                       >
-                        <Plus size={14} /> Request Access
+                        <Plus size={14} /> Add Service Line
                       </button>
                     )}
                   </div>
