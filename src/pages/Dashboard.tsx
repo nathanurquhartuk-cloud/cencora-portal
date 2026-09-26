@@ -112,13 +112,13 @@ export default function Dashboard() {
               <div style={{ display: 'flex', gap: '8px', marginTop: 'auto' }}>
                 <button
                   className="btn-primary"
-                  onClick={() => onNavigate('placeOrder', { service: 'Radiopharma' })}
+                  onClick={() => navigate('/place-order?service=Radiopharma')}
                   style={{ flex: 1, padding: '10px 16px', borderRadius: '6px', border: 'none', fontSize: '12px', fontWeight: '600', cursor: 'pointer', background: '#461E96', color: 'white' }}
                 >
                   Place Order
                 </button>
                 <button
-                  onClick={() => onNavigate('orders')}
+                  onClick={() => navigate('/orders')}
                   style={{ flex: 1, padding: '10px 16px', borderRadius: '6px', border: '1px solid #e0e0e0', fontSize: '12px', fontWeight: '600', cursor: 'pointer', background: 'white', color: '#1a1a1a' }}
                 >
                   View Orders
@@ -170,13 +170,13 @@ export default function Dashboard() {
               </div>
               <div style={{ display: 'flex', gap: '8px', marginTop: 'auto' }}>
                 <button
-                  onClick={() => onNavigate('placeOrder', { service: 'Central Lab Logistics' })}
+                  onClick={() => navigate('/place-order?service=Central%20Lab%20Logistics')}
                   style={{ flex: 1, padding: '10px 16px', borderRadius: '6px', border: 'none', fontSize: '12px', fontWeight: '600', cursor: 'pointer', background: '#461E96', color: 'white' }}
                 >
                   Place Order
                 </button>
                 <button
-                  onClick={() => onNavigate('orders')}
+                  onClick={() => navigate('/orders')}
                   style={{ flex: 1, padding: '10px 16px', borderRadius: '6px', border: '1px solid #e0e0e0', fontSize: '12px', fontWeight: '600', cursor: 'pointer', background: 'white', color: '#1a1a1a' }}
                 >
                   View Orders
@@ -192,7 +192,7 @@ export default function Dashboard() {
         </h3>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '16px', marginBottom: '32px' }}>
           <div style={{ background: 'white', border: '1px solid #e0e0e0', borderRadius: '8px', padding: '16px', cursor: 'pointer' }}
-               onClick={() => onNavigate('orders')}>
+               onClick={() => navigate('/orders')}>
             <div style={{ fontSize: '12px', color: '#666', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: '8px', fontWeight: '600' }}>
               📋 Active Orders
             </div>
@@ -200,7 +200,7 @@ export default function Dashboard() {
             <div style={{ fontSize: '12px', color: '#666' }}>Across all service lines</div>
           </div>
           <div style={{ background: 'white', border: '1px solid #e0e0e0', borderRadius: '8px', padding: '16px', cursor: 'pointer' }}
-               onClick={() => onNavigate('invoices')}>
+               onClick={() => navigate('/invoices')}>
             <div style={{ fontSize: '12px', color: '#666', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: '8px', fontWeight: '600' }}>
               📄 Outstanding Invoices
             </div>
@@ -208,7 +208,7 @@ export default function Dashboard() {
             <div style={{ fontSize: '12px', color: '#666' }}>$94,250 due</div>
           </div>
           <div style={{ background: 'white', border: '1px solid #e0e0e0', borderRadius: '8px', padding: '16px', cursor: 'pointer' }}
-               onClick={() => onNavigate('tracking')}>
+               onClick={() => navigate('/tracking')}>
             <div style={{ fontSize: '12px', color: '#666', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: '8px', fontWeight: '600' }}>
               🚚 In Transit
             </div>
