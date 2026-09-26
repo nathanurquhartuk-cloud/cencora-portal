@@ -1,9 +1,19 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { Pill, Microscope, Box, Zap, TrendingUp, Lock, Plus } from 'lucide-react'
 
 export default function Dashboard() {
   const navigate = useNavigate()
   const [expandedSections, setExpandedSections] = useState<Set<string>>(new Set(['radiopharma']))
+
+  const serviceLines = [
+    { id: 'radiopharma', name: 'Radiopharma', icon: Pill, active: true, tiers: ['Critical Tier', 'Strict Pick up and Delivery'] },
+    { id: 'centrallab', name: 'Central Lab Logistics', icon: Microscope, active: true, tiers: ['Standard (4-6 hr)', 'Assured (2 hr)', 'Critical (30 min)'] },
+    { id: 'biospecimen', name: 'Biospecimen', icon: Box, active: false },
+    { id: 'temperature', name: 'Temperature Controlled', icon: Zap, active: false },
+    { id: 'clinical', name: 'Clinical Trial Materials', icon: TrendingUp, active: false },
+    { id: 'hazmat', name: 'Hazmat / Restricted', icon: Lock, active: false }
+  ]
 
   const toggleSection = (id: string) => {
     const newSet = new Set(expandedSections)
@@ -67,122 +77,86 @@ export default function Dashboard() {
         {/* Active Service Lines */}
         <div style={{ marginBottom: '32px' }}>
           <h3 style={{ fontSize: '12px', fontWeight: '700', marginBottom: '16px', textTransform: 'uppercase', letterSpacing: '0.5px', color: '#666' }}>
-            Active Service Lines
+            Your Service Lines
           </h3>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '16px' }}>
-            {/* Radiopharma */}
-            <div style={{
-              background: 'white',
-              border: '2px solid #e0e0e0',
-              borderLeft: '5px solid #461E96',
-              borderRadius: '8px',
-              padding: '16px',
-              cursor: 'pointer',
-              transition: 'all 0.2s ease'
-            }} onMouseOver={(e) => {
-              const el = e.currentTarget as HTMLDivElement
-              el.style.boxShadow = '0 4px 12px rgba(70,30,150,0.15)'
-              el.style.transform = 'translateY(-2px)'
-            }} onMouseOut={(e) => {
-              const el = e.currentTarget as HTMLDivElement
-              el.style.boxShadow = ''
-              el.style.transform = ''
-            }}>
-              <div style={{ display: 'flex', gap: '8px', alignItems: 'flex-start', marginBottom: '12px' }}>
-                <div style={{ fontSize: '24px' }}>🔴</div>
-                <div style={{ flex: 1 }}>
-                  <div style={{ fontWeight: '700', fontSize: '13px', marginBottom: '4px' }}>Radiopharma</div>
-                  <div style={{ fontSize: '11px', color: '#666', display: 'flex', alignItems: 'center', gap: '4px' }}>
-                    <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#27ae60' }}></span>
-                    Active Agreement
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '16px' }}>
+            {serviceLines.map((sl) => {
+              const Icon = sl.icon
+              return (
+                <div key={sl.id} style={{
+                  background: sl.active ? 'white' : '#fafafa',
+                  border: sl.active ? '2px solid #e0e0e0' : '2px solid #e0e0e0',
+                  borderLeft: sl.active ? '5px solid #461E96' : '5px solid #999',
+                  borderRadius: '8px',
+                  padding: '16px',
+                  cursor: sl.active ? 'pointer' : 'default',
+                  transition: 'all 0.2s ease',
+                  opacity: sl.active ? 1 : 0.8
+                }} onMouseOver={(e) => {
+                  if (sl.active) {
+                    const el = e.currentTarget as HTMLDivElement
+                    el.style.boxShadow = '0 4px 12px rgba(70,30,150,0.15)'
+                    el.style.transform = 'translateY(-2px)'
+                  }
+                }} onMouseOut={(e) => {
+                  if (sl.active) {
+                    const el = e.currentTarget as HTMLDivElement
+                    el.style.boxShadow = ''
+                    el.style.transform = ''
+                  }
+                }}>
+                  <div style={{ display: 'flex', gap: '8px', alignItems: 'flex-start', marginBottom: '12px' }}>
+                    <div style={{ width: '36px', height: '36px', borderRadius: '6px', background: sl.active ? 'rgba(70,30,150,0.1)' : '#e0e0e0', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                      <Icon size={20} color={sl.active ? '#461E96' : '#999'} strokeWidth={1.5} />
+                    </div>
+                    <div style={{ flex: 1 }}>
+                      <div style={{ fontWeight: '700', fontSize: '13px', marginBottom: '4px' }}>{sl.name}</div>
+                      <div style={{ fontSize: '11px', color: '#666', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                        <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: sl.active ? '#27ae60' : '#ccc' }}></span>
+                        {sl.active ? 'Active Agreement' : 'Not Subscribed'}
+                      </div>
+                    </div>
+                  </div>
+                  {sl.active && sl.tiers && (
+                    <div style={{ margin: '12px 0', padding: '12px 0', borderTop: '1px solid #e0e0e0', borderBottom: '1px solid #e0e0e0' }}>
+                      <div style={{ fontSize: '11px', color: '#666', textTransform: 'uppercase', fontWeight: '600', letterSpacing: '0.5px', marginBottom: '8px' }}>
+                        Available Tiers
+                      </div>
+                      {sl.tiers.map((tier) => (
+                        <div key={tier} style={{ fontSize: '12px', padding: '4px 0', display: 'flex', alignItems: 'center', gap: '6px', color: '#461E96', fontWeight: '600' }}>
+                          <span>✓</span><span>{tier}</span>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                  <div style={{ display: 'flex', gap: '8px', marginTop: 'auto' }}>
+                    {sl.active ? (
+                      <>
+                        <button
+                          onClick={() => navigate(`/place-order?service=${encodeURIComponent(sl.name)}`)}
+                          style={{ flex: 1, padding: '10px 16px', borderRadius: '6px', border: 'none', fontSize: '12px', fontWeight: '600', cursor: 'pointer', background: '#461E96', color: 'white' }}
+                        >
+                          Place Order
+                        </button>
+                        <button
+                          onClick={() => navigate('/orders')}
+                          style={{ flex: 1, padding: '10px 16px', borderRadius: '6px', border: '1px solid #e0e0e0', fontSize: '12px', fontWeight: '600', cursor: 'pointer', background: 'white', color: '#1a1a1a' }}
+                        >
+                          View Orders
+                        </button>
+                      </>
+                    ) : (
+                      <button
+                        onClick={() => navigate('/agreements')}
+                        style={{ flex: 1, padding: '10px 16px', borderRadius: '6px', border: 'none', fontSize: '12px', fontWeight: '600', cursor: 'pointer', background: '#f0f0f0', color: '#666', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }}
+                      >
+                        <Plus size={14} /> Request Access
+                      </button>
+                    )}
                   </div>
                 </div>
-              </div>
-              <div style={{ margin: '12px 0', padding: '12px 0', borderTop: '1px solid #e0e0e0', borderBottom: '1px solid #e0e0e0' }}>
-                <div style={{ fontSize: '11px', color: '#666', textTransform: 'uppercase', fontWeight: '600', letterSpacing: '0.5px', marginBottom: '8px' }}>
-                  Your Tier
-                </div>
-                <div style={{ fontSize: '12px', padding: '4px 0', display: 'flex', alignItems: 'center', gap: '6px', color: '#461E96', fontWeight: '600' }}>
-                  <span>✓</span><span>Critical Tier</span>
-                </div>
-                <div style={{ fontSize: '12px', padding: '4px 0', display: 'flex', alignItems: 'center', gap: '6px', color: '#461E96', fontWeight: '600', marginTop: '4px' }}>
-                  <span>✓</span><span>Strict Pick up and Delivery</span>
-                </div>
-              </div>
-              <div style={{ display: 'flex', gap: '8px', marginTop: 'auto' }}>
-                <button
-                  className="btn-primary"
-                  onClick={() => navigate('/place-order?service=Radiopharma')}
-                  style={{ flex: 1, padding: '10px 16px', borderRadius: '6px', border: 'none', fontSize: '12px', fontWeight: '600', cursor: 'pointer', background: '#461E96', color: 'white' }}
-                >
-                  Place Order
-                </button>
-                <button
-                  onClick={() => navigate('/orders')}
-                  style={{ flex: 1, padding: '10px 16px', borderRadius: '6px', border: '1px solid #e0e0e0', fontSize: '12px', fontWeight: '600', cursor: 'pointer', background: 'white', color: '#1a1a1a' }}
-                >
-                  View Orders
-                </button>
-              </div>
-            </div>
-
-            {/* Central Lab Logistics */}
-            <div style={{
-              background: 'white',
-              border: '2px solid #e0e0e0',
-              borderLeft: '5px solid #461E96',
-              borderRadius: '8px',
-              padding: '16px',
-              cursor: 'pointer',
-              transition: 'all 0.2s ease'
-            }} onMouseOver={(e) => {
-              const el = e.currentTarget as HTMLDivElement
-              el.style.boxShadow = '0 4px 12px rgba(70,30,150,0.15)'
-              el.style.transform = 'translateY(-2px)'
-            }} onMouseOut={(e) => {
-              const el = e.currentTarget as HTMLDivElement
-              el.style.boxShadow = ''
-              el.style.transform = ''
-            }}>
-              <div style={{ display: 'flex', gap: '8px', alignItems: 'flex-start', marginBottom: '12px' }}>
-                <div style={{ fontSize: '24px' }}>🔬</div>
-                <div style={{ flex: 1 }}>
-                  <div style={{ fontWeight: '700', fontSize: '13px', marginBottom: '4px' }}>Central Lab Logistics</div>
-                  <div style={{ fontSize: '11px', color: '#666', display: 'flex', alignItems: 'center', gap: '4px' }}>
-                    <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#27ae60' }}></span>
-                    Active Agreement
-                  </div>
-                </div>
-              </div>
-              <div style={{ margin: '12px 0', padding: '12px 0', borderTop: '1px solid #e0e0e0', borderBottom: '1px solid #e0e0e0' }}>
-                <div style={{ fontSize: '11px', color: '#666', textTransform: 'uppercase', fontWeight: '600', letterSpacing: '0.5px', marginBottom: '8px' }}>
-                  Your Available Tiers
-                </div>
-                <div style={{ fontSize: '12px', padding: '4px 0', display: 'flex', alignItems: 'center', gap: '6px', color: '#461E96', fontWeight: '600' }}>
-                  <span>✓</span><span>Standard (4-6 hour response)</span>
-                </div>
-                <div style={{ fontSize: '12px', padding: '4px 0', display: 'flex', alignItems: 'center', gap: '6px', color: '#461E96', fontWeight: '600', marginTop: '4px' }}>
-                  <span>✓</span><span>Assured (2-hour response)</span>
-                </div>
-                <div style={{ fontSize: '12px', padding: '4px 0', display: 'flex', alignItems: 'center', gap: '6px', color: '#461E96', fontWeight: '600', marginTop: '4px' }}>
-                  <span>✓</span><span>Critical (30-minute response)</span>
-                </div>
-              </div>
-              <div style={{ display: 'flex', gap: '8px', marginTop: 'auto' }}>
-                <button
-                  onClick={() => navigate('/place-order?service=Central%20Lab%20Logistics')}
-                  style={{ flex: 1, padding: '10px 16px', borderRadius: '6px', border: 'none', fontSize: '12px', fontWeight: '600', cursor: 'pointer', background: '#461E96', color: 'white' }}
-                >
-                  Place Order
-                </button>
-                <button
-                  onClick={() => navigate('/orders')}
-                  style={{ flex: 1, padding: '10px 16px', borderRadius: '6px', border: '1px solid #e0e0e0', fontSize: '12px', fontWeight: '600', cursor: 'pointer', background: 'white', color: '#1a1a1a' }}
-                >
-                  View Orders
-                </button>
-              </div>
-            </div>
+              )
+            })}
           </div>
         </div>
 
@@ -229,105 +203,67 @@ export default function Dashboard() {
           Service Line Performance
         </h3>
 
-        {/* Radiopharma Collapsible */}
-        <div style={{ background: 'white', border: '1px solid #e0e0e0', borderRadius: '8px', marginBottom: '16px', overflow: 'hidden' }}>
-          <div
-            style={{
-              padding: '16px',
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              cursor: 'pointer',
-              fontWeight: '600',
-              fontSize: '14px',
-              borderLeft: expandedSections.has('radiopharma') ? '4px solid #461E96' : '4px solid transparent',
-              transition: 'all 0.2s ease'
-            }}
-            onClick={() => toggleSection('radiopharma')}
-            onMouseOver={(e) => (e.currentTarget as HTMLDivElement).style.background = '#f5f5f5'}
-            onMouseOut={(e) => (e.currentTarget as HTMLDivElement).style.background = 'white'}
-          >
-            <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
-              <span>🔴</span>
-              <span>Radiopharma Overview</span>
-            </div>
-            <div style={{ fontSize: '16px', transition: 'transform 0.2s ease', transform: expandedSections.has('radiopharma') ? 'rotate(180deg)' : 'rotate(0deg)' }}>▼</div>
-          </div>
-          {expandedSections.has('radiopharma') && (
-            <div style={{ maxHeight: '2000px', overflow: 'hidden', transition: 'max-height 0.3s ease', borderTop: '1px solid #e0e0e0' }}>
-              <div style={{ padding: '16px' }}>
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', gap: '16px' }}>
-                  <div style={{ padding: '12px', background: '#f5f5f5', borderRadius: '6px' }}>
-                    <div style={{ fontSize: '12px', color: '#666', marginBottom: '4px' }}>Active Orders</div>
-                    <div style={{ fontSize: '20px', fontWeight: '700', color: '#461E96' }}>8</div>
-                  </div>
-                  <div style={{ padding: '12px', background: '#f5f5f5', borderRadius: '6px' }}>
-                    <div style={{ fontSize: '12px', color: '#666', marginBottom: '4px' }}>Avg Order Value</div>
-                    <div style={{ fontSize: '20px', fontWeight: '700' }}>$15.2K</div>
-                  </div>
-                  <div style={{ padding: '12px', background: '#f5f5f5', borderRadius: '6px' }}>
-                    <div style={{ fontSize: '12px', color: '#666', marginBottom: '4px' }}>On-Time Rate</div>
-                    <div style={{ fontSize: '20px', fontWeight: '700', color: '#27ae60' }}>98%</div>
-                  </div>
-                  <div style={{ padding: '12px', background: '#f5f5f5', borderRadius: '6px' }}>
-                    <div style={{ fontSize: '12px', color: '#666', marginBottom: '4px' }}>Monthly Spend</div>
-                    <div style={{ fontSize: '20px', fontWeight: '700' }}>$121K</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          )}
-        </div>
+        {serviceLines.filter(sl => sl.active).map((sl) => {
+          const Icon = sl.icon
+          const performanceData = {
+            radiopharma: { orders: 8, avgValue: '$15.2K', onTime: '98%', spend: '$121K' },
+            centrallab: { orders: 16, avgValue: '$8.4K', onTime: '96%', spend: '$255K' }
+          }
+          const data = performanceData[sl.id as keyof typeof performanceData] || { orders: 12, avgValue: '$10K', onTime: '97%', spend: '$150K' }
 
-        {/* Central Lab Collapsible */}
-        <div style={{ background: 'white', border: '1px solid #e0e0e0', borderRadius: '8px', marginBottom: '16px', overflow: 'hidden' }}>
-          <div
-            style={{
-              padding: '16px',
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              cursor: 'pointer',
-              fontWeight: '600',
-              fontSize: '14px',
-              borderLeft: expandedSections.has('centrallab') ? '4px solid #461E96' : '4px solid transparent',
-              transition: 'all 0.2s ease'
-            }}
-            onClick={() => toggleSection('centrallab')}
-            onMouseOver={(e) => (e.currentTarget as HTMLDivElement).style.background = '#f5f5f5'}
-            onMouseOut={(e) => (e.currentTarget as HTMLDivElement).style.background = 'white'}
-          >
-            <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
-              <span>🔬</span>
-              <span>Central Lab Logistics Overview</span>
-            </div>
-            <div style={{ fontSize: '16px', transition: 'transform 0.2s ease', transform: expandedSections.has('centrallab') ? 'rotate(180deg)' : 'rotate(0deg)' }}>▼</div>
-          </div>
-          {expandedSections.has('centrallab') && (
-            <div style={{ maxHeight: '2000px', overflow: 'hidden', transition: 'max-height 0.3s ease', borderTop: '1px solid #e0e0e0' }}>
-              <div style={{ padding: '16px' }}>
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', gap: '16px' }}>
-                  <div style={{ padding: '12px', background: '#f5f5f5', borderRadius: '6px' }}>
-                    <div style={{ fontSize: '12px', color: '#666', marginBottom: '4px' }}>Active Orders</div>
-                    <div style={{ fontSize: '20px', fontWeight: '700' }}>16</div>
+          return (
+            <div key={sl.id} style={{ background: 'white', border: '1px solid #e0e0e0', borderRadius: '8px', marginBottom: '16px', overflow: 'hidden' }}>
+              <div
+                style={{
+                  padding: '16px',
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  cursor: 'pointer',
+                  fontWeight: '600',
+                  fontSize: '14px',
+                  borderLeft: expandedSections.has(sl.id) ? '4px solid #461E96' : '4px solid transparent',
+                  transition: 'all 0.2s ease'
+                }}
+                onClick={() => toggleSection(sl.id)}
+                onMouseOver={(e) => (e.currentTarget as HTMLDivElement).style.background = '#f5f5f5'}
+                onMouseOut={(e) => (e.currentTarget as HTMLDivElement).style.background = 'white'}
+              >
+                <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+                  <div style={{ width: '32px', height: '32px', borderRadius: '6px', background: 'rgba(70,30,150,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    <Icon size={18} color="#461E96" strokeWidth={1.5} />
                   </div>
-                  <div style={{ padding: '12px', background: '#f5f5f5', borderRadius: '6px' }}>
-                    <div style={{ fontSize: '12px', color: '#666', marginBottom: '4px' }}>Avg Order Value</div>
-                    <div style={{ fontSize: '20px', fontWeight: '700' }}>$8.4K</div>
-                  </div>
-                  <div style={{ padding: '12px', background: '#f5f5f5', borderRadius: '6px' }}>
-                    <div style={{ fontSize: '12px', color: '#666', marginBottom: '4px' }}>On-Time Rate</div>
-                    <div style={{ fontSize: '20px', fontWeight: '700', color: '#27ae60' }}>96%</div>
-                  </div>
-                  <div style={{ padding: '12px', background: '#f5f5f5', borderRadius: '6px' }}>
-                    <div style={{ fontSize: '12px', color: '#666', marginBottom: '4px' }}>Monthly Spend</div>
-                    <div style={{ fontSize: '20px', fontWeight: '700' }}>$255K</div>
+                  <span>{sl.name} Overview</span>
+                </div>
+                <div style={{ fontSize: '16px', transition: 'transform 0.2s ease', transform: expandedSections.has(sl.id) ? 'rotate(180deg)' : 'rotate(0deg)' }}>▼</div>
+              </div>
+              {expandedSections.has(sl.id) && (
+                <div style={{ maxHeight: '2000px', overflow: 'hidden', transition: 'max-height 0.3s ease', borderTop: '1px solid #e0e0e0' }}>
+                  <div style={{ padding: '16px' }}>
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', gap: '16px' }}>
+                      <div style={{ padding: '12px', background: '#f5f5f5', borderRadius: '6px' }}>
+                        <div style={{ fontSize: '12px', color: '#666', marginBottom: '4px' }}>Active Orders</div>
+                        <div style={{ fontSize: '20px', fontWeight: '700', color: '#461E96' }}>{data.orders}</div>
+                      </div>
+                      <div style={{ padding: '12px', background: '#f5f5f5', borderRadius: '6px' }}>
+                        <div style={{ fontSize: '12px', color: '#666', marginBottom: '4px' }}>Avg Order Value</div>
+                        <div style={{ fontSize: '20px', fontWeight: '700' }}>{data.avgValue}</div>
+                      </div>
+                      <div style={{ padding: '12px', background: '#f5f5f5', borderRadius: '6px' }}>
+                        <div style={{ fontSize: '12px', color: '#666', marginBottom: '4px' }}>On-Time Rate</div>
+                        <div style={{ fontSize: '20px', fontWeight: '700', color: '#27ae60' }}>{data.onTime}</div>
+                      </div>
+                      <div style={{ padding: '12px', background: '#f5f5f5', borderRadius: '6px' }}>
+                        <div style={{ fontSize: '12px', color: '#666', marginBottom: '4px' }}>Monthly Spend</div>
+                        <div style={{ fontSize: '20px', fontWeight: '700' }}>{data.spend}</div>
+                      </div>
+                    </div>
                   </div>
                 </div>
-              </div>
+              )}
             </div>
-          )}
-        </div>
+          )
+        })}
       </div>
     </div>
   )
