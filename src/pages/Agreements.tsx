@@ -97,17 +97,18 @@ export default function Agreements() {
       name: 'Clinical Supply Logistics',
       shortDesc: 'Logistics for clinical trial materials',
       capabilities: [
-        'IMPs, AUIs, comparators, ancillary supplies',
+        'IMPs, AIMs, comparators, ancillary supplies, devices',
         'Depot, site and investigator shipments',
-        'Real-time visibility',
+        'Temp-controlled transport',
         'Global regulatory expertise'
       ]
     },
     {
       name: 'Commercial Supply Logistics',
-      shortDesc: 'Logistics for commercial healthcare products',
+      shortDesc: 'Logistics for commercial pharmaceutical and healthcare products',
       capabilities: [
         'Finished goods distribution',
+        'Distribution and replenishment',
         'Regulated and non-regulated products',
         'Temperature-controlled',
         'Global network and compliance',
@@ -119,7 +120,7 @@ export default function Agreements() {
       shortDesc: 'Complex, high-value and specialized commodities',
       capabilities: [
         'Medical devices and equipment',
-        'Biological materials (>CAD)',
+        'Biological materials and CAD (>CAD)',
         'Aerospace, aircraft parts',
         'Time-critical and charter',
         'Project and event logistics'
@@ -276,47 +277,72 @@ export default function Agreements() {
 
         {/* Available Services */}
         <h2 style={{ fontSize: '14px', fontWeight: '700', marginBottom: '16px', textTransform: 'uppercase', letterSpacing: '0.5px', color: '#666' }}>
-          Available Service Offerings
+          All Service Offerings
         </h2>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '16px' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '16px' }}>
           {availableServices.map((service, i) => (
             <div key={i} style={{
               background: 'white',
               border: '1px solid #e0e0e0',
               borderRadius: '8px',
-              padding: '20px'
+              padding: '20px',
+              transition: 'all 0.2s ease'
+            }}
+            onMouseOver={(e) => {
+              const el = e.currentTarget as HTMLDivElement
+              el.style.boxShadow = '0 4px 12px rgba(70,30,150,0.1)'
+              el.style.borderColor = '#461E96'
+            }}
+            onMouseOut={(e) => {
+              const el = e.currentTarget as HTMLDivElement
+              el.style.boxShadow = ''
+              el.style.borderColor = '#e0e0e0'
             }}>
-              <h4 style={{ fontSize: '14px', fontWeight: '700', marginBottom: '4px', color: '#1a1a1a' }}>
-                {service.name}
-              </h4>
-              <p style={{ color: '#999', fontSize: '12px', marginBottom: '12px' }}>
-                {service.shortDesc}
-              </p>
-              <div style={{ fontSize: '12px', lineHeight: '1.6', color: '#666' }}>
-                {service.capabilities.map((cap, j) => (
-                  <div key={j} style={{ marginBottom: '4px' }}>• {cap}</div>
-                ))}
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '12px' }}>
+                <div>
+                  <h4 style={{ fontSize: '16px', fontWeight: '700', marginBottom: '4px', color: '#1a1a1a' }}>
+                    {service.name}
+                  </h4>
+                  <p style={{ color: '#999', fontSize: '13px' }}>
+                    {service.shortDesc}
+                  </p>
+                </div>
               </div>
-              <button
-                onClick={() => navigate(`/add-service?service=${encodeURIComponent(service.name)}`)}
-                style={{
-                  marginTop: '16px',
-                  width: '100%',
-                  padding: '8px 16px',
-                  background: '#461E96',
-                  color: 'white',
-                  border: 'none',
-                  borderRadius: '6px',
-                  fontSize: '12px',
-                  fontWeight: '600',
-                  cursor: 'pointer',
-                  transition: 'all 0.2s ease'
-                }}
-                onMouseOver={(e) => (e.currentTarget as HTMLButtonElement).style.background = '#350D6B'}
-                onMouseOut={(e) => (e.currentTarget as HTMLButtonElement).style.background = '#461E96'}
-              >
-                Request Information
-              </button>
+
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '24px' }}>
+                <div>
+                  <div style={{ fontSize: '12px', fontWeight: '700', color: '#461E96', marginBottom: '12px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+                    Key Capabilities
+                  </div>
+                  <div style={{ fontSize: '12px', lineHeight: '1.8', color: '#666' }}>
+                    {service.capabilities.map((cap, j) => (
+                      <div key={j} style={{ marginBottom: '6px' }}>✓ {cap}</div>
+                    ))}
+                  </div>
+                </div>
+
+                <div>
+                  <button
+                    onClick={() => navigate(`/add-service?service=${encodeURIComponent(service.name)}`)}
+                    style={{
+                      width: '100%',
+                      padding: '10px 16px',
+                      background: '#461E96',
+                      color: 'white',
+                      border: 'none',
+                      borderRadius: '6px',
+                      fontSize: '12px',
+                      fontWeight: '600',
+                      cursor: 'pointer',
+                      transition: 'all 0.2s ease'
+                    }}
+                    onMouseOver={(e) => (e.currentTarget as HTMLButtonElement).style.background = '#350D6B'}
+                    onMouseOut={(e) => (e.currentTarget as HTMLButtonElement).style.background = '#461E96'}
+                  >
+                    Request Information
+                  </button>
+                </div>
+              </div>
             </div>
           ))}
         </div>
