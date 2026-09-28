@@ -83,7 +83,7 @@ export default function Agreements() {
       ]
     },
     {
-      name: 'Depot Services',
+      name: 'Warehouse',
       shortDesc: 'Storage, inventory management and fulfillment solutions',
       capabilities: [
         'Secure storage (ambient/frozen)',

@@ -34,8 +34,8 @@ export default function Dashboard() {
       active: false
     },
     {
-      id: 'depot',
-      name: 'Depot Services',
+      id: 'warehouse',
+      name: 'Warehouse',
       description: 'Storage, inventory management and fulfillment solutions',
       capabilities: ['Secure storage (ambient/frozen)', 'Inventory management', 'Receipt, pick, pack and ship', 'Returns and destruction', 'Integration with supply logistics'],
       icon: Package,
@@ -45,7 +45,7 @@ export default function Dashboard() {
       id: 'clinical',
       name: 'Clinical Supply Logistics',
       description: 'Logistics for clinical trial materials',
-      capabilities: ['IMPs, AUIs, comparators, ancillary supplies', 'Depot, site and investigator shipments', 'Real-time visibility', 'Global regulatory expertise'],
+      capabilities: ['IMPs, AIMs, comparators, ancillary supplies', 'Depot, site and investigator shipments', 'Real-time visibility', 'Global regulatory expertise'],
       icon: Beaker,
       active: false
     },
