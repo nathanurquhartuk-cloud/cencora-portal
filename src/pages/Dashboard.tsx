@@ -7,13 +7,64 @@ export default function Dashboard() {
   const [expandedSections, setExpandedSections] = useState<Set<string>>(new Set(['radiopharma']))
 
   const serviceLines = [
-    { id: 'radiopharma', name: 'Radiopharma', icon: Pill, active: true, tiers: ['Critical Tier', 'Strict Pick up and Delivery'] },
-    { id: 'centrallab', name: 'Central Lab Logistics', icon: Microscope, active: true, tiers: ['Standard (4-6 hr)', 'Assured (2 hr)', 'Critical (30 min)'] },
-    { id: 'clinical', name: 'Clinical Trial Logistics', icon: Beaker, active: false },
-    { id: 'cellgene', name: 'Cell & Gene Therapy', icon: Dna, active: false },
-    { id: 'warehouse', name: 'Warehouse', icon: Package, active: false },
-    { id: 'commercial', name: 'Commercial Supply Chain', icon: ShoppingCart, active: false },
-    { id: 'other', name: 'Other Services', icon: MoreHorizontal, active: false }
+    {
+      id: 'radiopharma',
+      name: 'Radiopharma',
+      description: 'Time-critical radiopharmaceutical logistics',
+      capabilities: ['Class 7 expertise', 'Patient-specific deliveries', 'Global regulatory support', 'Dedicated handling', '24/7 control tower', 'Full audit trail'],
+      icon: Pill,
+      active: true,
+      tiers: ['Critical Tier', 'Strict Pick up and Delivery']
+    },
+    {
+      id: 'centrallab',
+      name: 'Central Lab Logistics & Biostorage',
+      description: 'Biosample logistics and integrated biostorage',
+      capabilities: ['Sample collection and transport', 'Biorepository and biostorage', 'Ambient, frozen, cryogenic', 'Global lab network support', 'Integrated visibility'],
+      icon: Microscope,
+      active: true,
+      tiers: ['Standard (4-6 hr)', 'Assured (2 hr)', 'Critical (30 min)']
+    },
+    {
+      id: 'cellgene',
+      name: 'Cell & Gene Therapies',
+      description: 'Autonomous, allogeneic and emerging therapies',
+      capabilities: ['Cryogenic and ultra-low temp', 'Chain of identity and custody', 'Patient-centric logistics', 'Genetic information', 'Specialist handling'],
+      icon: Dna,
+      active: false
+    },
+    {
+      id: 'depot',
+      name: 'Depot Services',
+      description: 'Storage, inventory management and fulfillment solutions',
+      capabilities: ['Secure storage (ambient/frozen)', 'Inventory management', 'Receipt, pick, pack and ship', 'Returns and destruction', 'Integration with supply logistics'],
+      icon: Package,
+      active: false
+    },
+    {
+      id: 'clinical',
+      name: 'Clinical Supply Logistics',
+      description: 'Logistics for clinical trial materials',
+      capabilities: ['IMPs, AUIs, comparators, ancillary supplies', 'Depot, site and investigator shipments', 'Real-time visibility', 'Global regulatory expertise'],
+      icon: Beaker,
+      active: false
+    },
+    {
+      id: 'commercial',
+      name: 'Commercial Supply Logistics',
+      description: 'Logistics for commercial healthcare products',
+      capabilities: ['Finished goods distribution', 'Regulated and non-regulated products', 'Temperature-controlled', 'Global network and compliance', 'Time-critical and charter'],
+      icon: ShoppingCart,
+      active: false
+    },
+    {
+      id: 'specialty',
+      name: 'Specialty Logistics',
+      description: 'Complex, high-value and specialized commodities',
+      capabilities: ['Medical devices and equipment', 'Biological materials (>CAD)', 'Aerospace, aircraft parts', 'Time-critical and charter', 'Project and event logistics'],
+      icon: MoreHorizontal,
+      active: false
+    }
   ]
 
   const toggleSection = (id: string) => {
@@ -112,6 +163,7 @@ export default function Dashboard() {
                     </div>
                     <div style={{ flex: 1 }}>
                       <div style={{ fontWeight: '700', fontSize: '13px', marginBottom: '4px' }}>{sl.name}</div>
+                      <div style={{ fontSize: '11px', color: '#999', marginBottom: '6px' }}>{sl.description}</div>
                       <div style={{ fontSize: '11px', color: '#666', display: 'flex', alignItems: 'center', gap: '4px' }}>
                         <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: sl.active ? '#27ae60' : '#ccc' }}></span>
                         {sl.active ? 'Active Agreement' : 'Not Subscribed'}
